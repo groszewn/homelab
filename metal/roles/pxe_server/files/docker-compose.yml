@@ -10,15 +10,16 @@ services:
     build: ./tftp
     network_mode: host
     volumes:
-      - ./data/pxe-config/grub.cfg:/var/lib/tftpboot/grub.cfg
-      - ./data/os/EFI/BOOT/grubx64.efi:/var/lib/tftpboot/grubx64.efi
-      - ./data/os/images/pxeboot/initrd.img:/var/lib/tftpboot/initrd.img
-      - ./data/os/images/pxeboot/vmlinuz:/var/lib/tftpboot/vmlinuz
+      - ./data/pxe-config/grubnetx64.efi.signed:/var/lib/tftpboot/grubnetx64.efi.signed
+      - ./data/pxe-config/grub.cfg:/var/lib/tftpboot/grub/grub.cfg
+      - ./data/os/EFI/boot/grubx64.efi:/var/lib/tftpboot/grubx64.efi
+      - ./data/os/casper/initrd:/var/lib/tftpboot/casper/initrd
+      - ./data/os/casper/vmlinuz:/var/lib/tftpboot/casper/vmlinuz
   http:
     build: ./http
     network_mode: host
     volumes:
-      - ./data/os:/usr/share/nginx/html/os
+      - ./data/iso:/usr/share/nginx/html/iso
       - ./data/init-config/:/usr/share/nginx/html/init-config
     environment:
       NGINX_PORT: 80

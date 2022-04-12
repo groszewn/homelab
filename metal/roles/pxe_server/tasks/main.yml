@@ -9,7 +9,13 @@
 - name: Extract boot image
   ansible.builtin.command:
     cmd: "xorriso -osirrox on -indev {{ iso.dest }} -extract / {{ role_path }}/files/data/os"
-    creates: "{{ role_path }}/files/data/os/.treeinfo"
+    creates: "{{ role_path }}/files/data/os/.disk/info"
+
+- name: Download grub efi binary
+  get_url:
+    url: "{{ grub_efi_binary_url }}"
+    dest: "{{ role_path }}/files/data/pxe-config/grubnetx64.efi.signed"
+    checksum: "{{ grub_efi_binary_checksum }}"
 
 - name: Generate DHCP config
   ansible.builtin.template:
@@ -22,6 +28,27 @@
     src: grub.cfg.j2
     dest: "{{ role_path }}/files/data/pxe-config/grub.cfg"
     mode: 0644
+
+- name: Generate cloud-init directory for each machine
+  file:
+    path: "{{ role_path }}/files/data/init-config/{{ hostvars[item]['mac'] }}"
+    state: directory
+    mode: '0755'
+  loop: "{{ groups['metal'] }}"
+
+- name: Generate user-data config for each machine
+  template:
+    src: user-data.j2
+    dest: "{{ role_path }}/files/data/init-config/{{ hostvars[item]['mac'] }}/user-data"
+    mode: 0644
+  loop: "{{ groups['metal'] }}"
+
+- name: Generate meta-data config for each machine
+  template:
+    src: meta-data.j2
+    dest: "{{ role_path }}/files/data/init-config/{{ hostvars[item]['mac'] }}/meta-data"
+    mode: 0644
+  loop: "{{ groups['metal'] }}"
 
 - name: Generate init config for each machine
   ansible.builtin.template:

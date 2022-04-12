@@ -1,8 +1,28 @@
-set timeout=1
+set timeout=30
+default=autoinstall
+timeout_style=menu
 
-menuentry '{{ iso_url | basename | splitext | first }} (PXE)' {
-    linux vmlinuz \
+menuentry '{{ iso_url | basename | splitext | first }} (PXE autoinstall)' --id=autoinstall {
+    set gfxpayload=keep
+    echo "Loading Kernel..."
+    linux /casper/vmlinuz \
         ip=dhcp \
-        inst.ks=http://{{ ansible_default_ipv4.address }}/init-config/${net_default_mac}.ks
-    initrd initrd.img
+        url=http://{{ ansible_default_ipv4.address }}/iso/{{ iso_url | basename }} \
+        autoinstall \
+        ds="nocloud-net;s=http://{{ ansible_default_ipv4.address }}/init-config/${net_default_mac}/" \
+        root=/dev/ram0 \
+        cloud-config-url=/dev/null
+    echo "Loading Ram Disk"
+    initrd /casper/initrd
+}
+menuentry '{{ iso_url | basename | splitext | first }} (PXE manual install)' --id=install {
+    set gfxpayload=keep
+    echo "Loading Kernel..."
+    linux /casper/vmlinuz \
+        ip=dhcp \
+        url=http://{{ ansible_default_ipv4.address }}/iso/{{ iso_url | basename }} \
+        root=/dev/ram0 \
+        cloud-config-url=/dev/null
+    echo "Loading Ram Disk"
+    initrd /casper/initrd
 }

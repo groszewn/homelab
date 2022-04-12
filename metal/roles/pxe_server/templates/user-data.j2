@@ -1,0 +1,53 @@
+#cloud-config
+autoinstall:
+  version: 1
+  identity:
+    hostname: {{ hostvars[item]['inventory_hostname'] }}
+  refresh-installer:
+    update: true
+    channel: stable
+  locale: en_US.UTF-8
+  keyboard:
+    layout: us
+  network:
+    version: 2
+    ethernets:
+      {{ hostvars[item]['network_interface'] }}:
+        dhcp4: yes
+        addresses:
+        - {{ hostvars[item]['ansible_host'] }}/24
+        gateway4: {{ ansible_default_ipv4.gateway }}
+        nameservers:
+          addresses:
+          - {{ dns_server }}
+  ssh:
+    allow-pw: no
+    authorized-keys:
+    - "{{ ssh_public_key }}"
+    install-server: true
+  storage:
+    grub:
+      reorder_uefi: False
+    config:
+    - type: disk
+      id: disk-{{ hostvars[item]['disk'] }}
+      grub_device: true
+      path: /dev/{{ hostvars[item]['disk'] }}
+      ptable: gpt
+      wipe: superblock-recursive
+    - type: partition
+      id: partition-0
+      flag: bios_grub
+      device: disk-{{ hostvars[item]['disk'] }}
+      number: 1
+      fstype: vfat
+      size: 512
+    - type: partition
+      id: partition-1
+      device: disk-{{ hostvars[item]['disk'] }}
+      size: -1
+      fstype: ext4
+      wipe: superblock
+  packages:
+  - ubuntu-desktop
+  - open-iscsi

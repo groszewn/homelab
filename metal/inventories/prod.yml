@@ -2,9 +2,9 @@ metal:
   children:
     masters:
       hosts:
-        metal0: {ansible_host: 192.168.1.110, mac: '00:23:24:d1:f3:f0', disk: sda, network_interface: eno1}
-        metal1: {ansible_host: 192.168.1.111, mac: '00:23:24:d1:f4:d6', disk: sda, network_interface: eno1}
-        metal2: {ansible_host: 192.168.1.112, mac: '00:23:24:e7:04:60', disk: sda, network_interface: eno1}
+        nicky-thinkcenter-0: {ansible_host: 192.168.50.200, mac: '00:23:24:95:61:6a', disk: sda, network_interface: eno1}
+        nicky-thinkcenter-1: {ansible_host: 192.168.50.201, mac: 'd8:cb:8a:d0:92:ac', disk: sda, network_interface: eno1}
+        nicky-thinkcenter-2: {ansible_host: 192.168.50.202, mac: '44:8a:5b:dd:c0:37', disk: sda, network_interface: eno1}
     workers:
       hosts:
-        metal3: {ansible_host: 192.168.1.113, mac: '00:23:24:d1:f5:69', disk: sda, network_interface: eno1}
+        nicky-thinkcenter-3: {ansible_host: 192.168.50.203, mac: 'd8:cb:8a:5f:ae:c0', disk: sda, network_interface: eno1}

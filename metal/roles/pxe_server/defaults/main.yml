@@ -1,3 +1,5 @@
-iso_url: "https://download.rockylinux.org/pub/rocky/8.6/isos/x86_64/Rocky-8.6-x86_64-minimal.iso"
-iso_checksum: "sha256:a9ece0e810275e881abfd66bb0e59ac05d567a5ec0bc2f108b9a3e90bef5bf94"
-timezone: Asia/Ho_Chi_Minh
+iso_url: "https://releases.ubuntu.com/21.10/ubuntu-21.10-live-server-amd64.iso"
+iso_checksum: "sha256:e84f546dfc6743f24e8b1e15db9cc2d2c698ec57d9adfb852971772d1ce692d4"
+grub_efi_binary_url: "http://archive.ubuntu.com/ubuntu/dists/impish/main/uefi/grub2-amd64/current/grubnetx64.efi.signed"
+grub_efi_binary_checksum: "sha256:77a799d92ae1bd4dcce9f30b5619bbe38926fe5ae56fdde584446d3419e5798f"
+timezone: America/New_York
